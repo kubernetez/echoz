@@ -457,25 +457,35 @@ fi
      AC_MSG_RESULT([$enable_dist_cmakefiles])])
 AM_CONDITIONAL(ENABLE_DIST_CMAKEFILES, test "x$enable_dist_cmakefiles" = "xyes")
 
-# Check for echo_client intent
-AC_ARG_ENABLE([echo_client],
-    AS_HELP_STRING([--enable-echo_client],
-        [Compile and install 'echo_client' [default=yes]]),
-    [enable_echo_client=$enableval],
-    [enable_echo_client=yes])
+# Check for echoz_client intent
+AC_ARG_ENABLE([echoz_client],
+    AS_HELP_STRING([--enable-echoz_client],
+        [Compile and install 'echoz_client' [default=yes]]),
+    [enable_echoz_client=$enableval],
+    [enable_echoz_client=yes])
 
-AM_CONDITIONAL([ENABLE_ECHO_CLIENT], [test x$enable_echo_client != xno])
-AM_COND_IF([ENABLE_ECHO_CLIENT], [AC_MSG_NOTICE([ENABLE_ECHO_CLIENT defined])])
+AM_CONDITIONAL([ENABLE_ECHOZ_CLIENT], [test x$enable_echoz_client != xno])
+AM_COND_IF([ENABLE_ECHOZ_CLIENT], [AC_MSG_NOTICE([ENABLE_ECHOZ_CLIENT defined])])
 
-# Check for echo_server intent
-AC_ARG_ENABLE([echo_server],
-    AS_HELP_STRING([--enable-echo_server],
-        [Compile and install 'echo_server' [default=yes]]),
-    [enable_echo_server=$enableval],
-    [enable_echo_server=yes])
+# Check for echoz_server intent
+AC_ARG_ENABLE([echoz_server],
+    AS_HELP_STRING([--enable-echoz_server],
+        [Compile and install 'echoz_server' [default=yes]]),
+    [enable_echoz_server=$enableval],
+    [enable_echoz_server=yes])
 
-AM_CONDITIONAL([ENABLE_ECHO_SERVER], [test x$enable_echo_server != xno])
-AM_COND_IF([ENABLE_ECHO_SERVER], [AC_MSG_NOTICE([ENABLE_ECHO_SERVER defined])])
+AM_CONDITIONAL([ENABLE_ECHOZ_SERVER], [test x$enable_echoz_server != xno])
+AM_COND_IF([ENABLE_ECHOZ_SERVER], [AC_MSG_NOTICE([ENABLE_ECHOZ_SERVER defined])])
+
+# Check for echoz_selftest intent
+AC_ARG_ENABLE([echoz_selftest],
+    AS_HELP_STRING([--enable-echoz_selftest],
+        [Compile 'echoz_selftest' in src [default=yes]]),
+    [enable_echoz_selftest=$enableval],
+    [enable_echoz_selftest=yes])
+
+AM_CONDITIONAL([ENABLE_ECHOZ_SELFTEST], [test x$enable_echoz_selftest != xno])
+AM_COND_IF([ENABLE_ECHOZ_SELFTEST], [AC_MSG_NOTICE([ENABLE_ECHOZ_SELFTEST defined])])
 
 # Checks for library functions.
 AC_TYPE_SIGNAL
@@ -525,7 +535,9 @@ AS_IF([test "x$enable_Werror" = "xyes" || test "x$enable_Werror" = "xauto"],
 
 # Specify output files
 AC_CONFIG_FILES([Makefile
-                ])
+                 doc/Makefile
+                 src/libechoz.pc
+                 ])
 
 
 AC_OUTPUT

@@ -107,39 +107,123 @@ ENDIF (CZMQ_FOUND)
 # includes
 ########################################################################
 set (echoz_headers
+    include/echoz_library.h
+    include/echoz.h
 )
+
+IF (ENABLE_DRAFTS)
+    list(APPEND echoz_headers
+        include/zechoer.h
+    )
+ENDIF (ENABLE_DRAFTS)
 
 source_group ("Header Files" FILES ${echoz_headers})
 install(FILES ${echoz_headers} DESTINATION include)
 
 ########################################################################
+# library
+########################################################################
+include_directories("${SOURCE_DIR}/src" "${SOURCE_DIR}/include")
+set (echoz_sources
+)
+
+IF (ENABLE_DRAFTS)
+    list (APPEND echoz_sources
+        src/zechoer.c
+    )
+ENDIF (ENABLE_DRAFTS)
+
+IF (ENABLE_DRAFTS)
+    list (APPEND echoz_sources
+        src/echoz_private_selftest.c
+    )
+ENDIF (ENABLE_DRAFTS)
+
+source_group("Source Files" FILES ${echoz_sources})
+if (NOT DEFINED BUILD_SHARED_LIBS)
+    SET(BUILD_SHARED_LIBS ON)
+endif()
+add_library(echoz ${echoz_sources})
+set_target_properties(echoz
+    PROPERTIES DEFINE_SYMBOL "ECHOZ_EXPORTS"
+)
+set_target_properties (echoz
+    PROPERTIES SOVERSION "0.0.0"
+)
+target_link_libraries(echoz
+    ${ZEROMQ_LIBRARIES} ${MORE_LIBRARIES}
+)
+
+install(TARGETS echoz
+    LIBRARY DESTINATION "lib${LIB_SUFFIX}" # .so file
+    ARCHIVE DESTINATION "lib${LIB_SUFFIX}" # .lib file
+    RUNTIME DESTINATION bin              # .dll file
+)
+
+########################################################################
+# pkgconfig
+########################################################################
+set (VERSION "0.1.0")
+set (prefix "${CMAKE_INSTALL_PREFIX}")
+set (exec_prefix "\${prefix}")
+set (libdir "\${prefix}/lib${LIB_SUFFIX}")
+set (includedir "\${prefix}/include")
+IF (ENABLE_DRAFTS)
+    set (pkg_config_defines "-DECHOZ_BUILD_DRAFT_API=1")
+ELSE (ENABLE_DRAFTS)
+    set (pkg_config_defines "")
+ENDIF (ENABLE_DRAFTS)
+configure_file(
+    "${SOURCE_DIR}/src/libechoz.pc.in"
+    "${SOURCE_DIR}/src/libechoz.pc"
+@ONLY)
+
+install(
+    FILES "${SOURCE_DIR}/src/libechoz.pc"
+    DESTINATION "lib${LIB_SUFFIX}/pkgconfig"
+)
+
+########################################################################
 # executables
 ########################################################################
 add_executable(
-    echo_client
-    "${SOURCE_DIR}/src/echo_client.c"
+    echoz_client
+    "${SOURCE_DIR}/src/echoz_client.c"
 )
 target_link_libraries(
-    echo_client
+    echoz_client
+    echoz
     ${LIBZMQ_LIBRARIES}
     ${CZMQ_LIBRARIES}
     ${OPTIONAL_LIBRARIES}
 )
-install(TARGETS echo_client
+install(TARGETS echoz_client
     RUNTIME DESTINATION bin
 )
 add_executable(
-    echo_server
-    "${SOURCE_DIR}/src/echo_server.c"
+    echoz_server
+    "${SOURCE_DIR}/src/echoz_server.c"
 )
 target_link_libraries(
-    echo_server
+    echoz_server
+    echoz
     ${LIBZMQ_LIBRARIES}
     ${CZMQ_LIBRARIES}
     ${OPTIONAL_LIBRARIES}
 )
-install(TARGETS echo_server
+install(TARGETS echoz_server
     RUNTIME DESTINATION bin
+)
+add_executable(
+    echoz_selftest
+    "${SOURCE_DIR}/src/echoz_selftest.c"
+)
+target_link_libraries(
+    echoz_selftest
+    echoz
+    ${LIBZMQ_LIBRARIES}
+    ${CZMQ_LIBRARIES}
+    ${OPTIONAL_LIBRARIES}
 )
 
 ########################################################################
@@ -157,6 +241,18 @@ endif()
 
 set(TEST_CLASSES
 )
+
+IF (ENABLE_DRAFTS)
+    list (APPEND TEST_CLASSES
+    zechoer
+    )
+ENDIF (ENABLE_DRAFTS)
+
+IF (ENABLE_DRAFTS)
+    list (APPEND TEST_CLASSES
+    private_classes
+    )
+ENDIF (ENABLE_DRAFTS)
 
 foreach(TEST_CLASS ${TEST_CLASSES})
     add_test(
@@ -188,8 +284,9 @@ set(cmake_generated ${CMAKE_BINARY_DIR}/CMakeCache.txt
                     ${CMAKE_BINARY_DIR}/src/libechoz.pc
                     ${CMAKE_BINARY_DIR}/src/libechoz.so
                     ${CMAKE_BINARY_DIR}/src/echoz_selftest
-                    ${CMAKE_BINARY_DIR}/src/echo_client
-                    ${CMAKE_BINARY_DIR}/src/echo_server
+                    ${CMAKE_BINARY_DIR}/src/echoz_client
+                    ${CMAKE_BINARY_DIR}/src/echoz_server
+                    ${CMAKE_BINARY_DIR}/src/echoz_selftest
 )
 
 add_custom_command(

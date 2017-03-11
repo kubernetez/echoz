@@ -16,7 +16,9 @@
     
     <use project = "czmq" />
 
-    <main name = "echo_client">Echo client</main>
-    <main name = "echo_server">Echo server</main>
+    <class name = "zechoer">Echo server API</class>
+
+    <main name = "echoz_client">Echo client</main>
+    <main name = "echoz_server">Echo server</main>
 
 </project>
