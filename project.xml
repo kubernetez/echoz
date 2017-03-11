@@ -16,7 +16,7 @@
     
     <use project = "czmq" />
 
-    <main name = "echo_client">Echo client</actor>
-    <main name = "echo_server">Echo server</actor>
+    <main name = "echo_client">Echo client</main>
+    <main name = "echo_server">Echo server</main>
 
 </project>
