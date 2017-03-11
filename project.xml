@@ -1,0 +1,22 @@
+<project
+    name = "echoz"
+    description = "Simple Echo Client Server"
+    script = "zproject.gsl"
+    email = "taotetek@gmail.com"
+    repository = "https://github.com/kubernetez/echoz"
+    url = "https://github.com/kubernetez/echoz"
+    license = "MPLv2"
+	>
+
+    <include filename = "license.xml" />
+    <version major = "0" minor = "1" patch = "0" />
+    
+    <target name = "autotools" />
+    <target name = "docker" />
+    
+    <use project = "czmq" />
+
+    <main name = "echo_client">Echo client</actor>
+    <main name = "echo_server">Echo server</actor>
+
+</project>
