@@ -18,8 +18,7 @@ include_HEADERS = \
 
 if ENABLE_DRAFTS
 include_HEADERS += \
-    include/zechoer.h \
-    include/zecho_actor.h
+    include/zechoer.h
 
 endif
 src_libechoz_la_SOURCES = \
@@ -27,8 +26,7 @@ src_libechoz_la_SOURCES = \
 
 if ENABLE_DRAFTS
 src_libechoz_la_SOURCES += \
-    src/zechoer.c \
-    src/zecho_actor.c
+    src/zechoer.c
 
 endif
 

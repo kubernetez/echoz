@@ -114,7 +114,6 @@ set (echoz_headers
 IF (ENABLE_DRAFTS)
     list(APPEND echoz_headers
         include/zechoer.h
-        include/zecho_actor.h
     )
 ENDIF (ENABLE_DRAFTS)
 
@@ -131,7 +130,6 @@ set (echoz_sources
 IF (ENABLE_DRAFTS)
     list (APPEND echoz_sources
         src/zechoer.c
-        src/zecho_actor.c
     )
 ENDIF (ENABLE_DRAFTS)
 
@@ -247,7 +245,6 @@ set(TEST_CLASSES
 IF (ENABLE_DRAFTS)
     list (APPEND TEST_CLASSES
     zechoer
-    zecho_actor
     )
 ENDIF (ENABLE_DRAFTS)
 

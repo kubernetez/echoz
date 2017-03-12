@@ -22,6 +22,10 @@ extern "C" {
 ECHOZ_EXPORT zechoer_t *
     zechoer_new (char  *endpoints);
 
+// Start the zechoer
+ECHOZ_EXPORT int 
+    zechoer_start (zechoer_t *self);
+
 //  Destroy the zechoer
 ECHOZ_EXPORT void
     zechoer_destroy (zechoer_t **self_p);

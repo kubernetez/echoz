@@ -61,15 +61,15 @@ zechoer_start (zechoer_t *self)
         zframe_t *identity = zframe_recv (which);
         if (!identity)
             return -1;
-
+        
         zframe_t *message = zframe_recv (which);
         if (!message)
             return 1;
-
+        
         if (self->verbose)
             zsys_debug ("received %s from %s", message, identity);
 
-        zframe_send (&identity, self->router, 0);
+        zframe_send (&identity, self->router, 1);
         zframe_send (&message, self->router, 0);
 
         which = (zsock_t *) zpoller_wait (self->poller, -1);

@@ -16,7 +16,6 @@
     
     <use project = "czmq" />
 
-    <actor name = "zecho_actor">Actor for zechoer</actor>
     <class name = "zechoer">Echo server API</class>
 
     <main name = "echoz_client">Echo client</main>

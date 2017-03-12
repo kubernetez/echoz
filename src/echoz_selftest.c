@@ -30,7 +30,6 @@ all_tests [] = {
 #ifdef ECHOZ_BUILD_DRAFT_API
 // Tests for draft public classes:
     { "zechoer", zechoer_test },
-    { "zecho_actor", zecho_actor_test },
 #endif // ECHOZ_BUILD_DRAFT_API
 #ifdef ECHOZ_BUILD_DRAFT_API
     { "private_classes", echoz_private_selftest },
@@ -92,7 +91,7 @@ main (int argc, char **argv)
         else
         if (streq (argv [argn], "--number")
         ||  streq (argv [argn], "-n")) {
-            puts ("2");
+            puts ("1");
             return 0;
         }
         else
@@ -100,7 +99,6 @@ main (int argc, char **argv)
         ||  streq (argv [argn], "-l")) {
             puts ("Available tests:");
             puts ("    zechoer\t\t- draft");
-            puts ("    zecho_actor\t\t- draft");
             puts ("    private_classes\t- draft");
             return 0;
         }

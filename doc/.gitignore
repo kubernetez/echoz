@@ -13,8 +13,6 @@
 # Ignore the source doc texts generated from program sources
 zechoer.txt
 zechoer.doc
-zecho_actor.txt
-zecho_actor.doc
 echoz_client.txt
 echoz_client.doc
 echoz_server.txt
