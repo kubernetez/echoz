@@ -22,7 +22,9 @@
 //  Structure of our class
 
 struct _zechoer_t {
-    int filler;     //  Declare class properties here
+    zsock_t *router;
+    zpoller_t *poller;
+    bool verbose;
 };
 
 
@@ -30,14 +32,56 @@ struct _zechoer_t {
 //  Create a new zechoer
 
 zechoer_t *
-zechoer_new (void)
+zechoer_new (char *endpoints)
 {
     zechoer_t *self = (zechoer_t *) zmalloc (sizeof (zechoer_t));
     assert (self);
-    //  Initialize class properties here
+    
+    self->router = zsock_new_router (endpoints);
+    if (!self->router)
+        zechoer_destroy (&self);
+     
+
+    self->poller = zpoller_new (self->router, NULL);
+    if (!self->poller)
+        zechoer_destroy (&self);
+
     return self;
 }
 
+
+//  --------------------------------------------------------------------------
+//  Start the zechoer
+
+int
+zechoer_start (zechoer_t *self)
+{
+    zsock_t *which = (zsock_t *) zpoller_wait (self->poller, -1);
+    while (which == self->router) {
+        zframe_t *identity = zframe_recv (which);
+        if (!identity)
+            return -1;
+
+        zframe_t *message = zframe_recv (which);
+        if (!message)
+            return 1;
+
+        if (self->verbose)
+            zsys_debug ("received %s from %s", message, identity);
+
+        zframe_send (&identity, self->router, 0);
+        zframe_send (&message, self->router, 0);
+
+        which = (zsock_t *) zpoller_wait (self->poller, -1);
+    }
+
+    bool abnormal_exit = zpoller_terminated (self->poller);
+
+    if (abnormal_exit)
+        return -1;
+
+    return 0;
+}
 
 //  --------------------------------------------------------------------------
 //  Destroy the zechoer
@@ -48,8 +92,8 @@ zechoer_destroy (zechoer_t **self_p)
     assert (self_p);
     if (*self_p) {
         zechoer_t *self = *self_p;
-        //  Free class properties here
-        //  Free object itself
+        zpoller_destroy (&self->poller);
+        zsock_destroy (&self->router);
         free (self);
         *self_p = NULL;
     }
@@ -81,7 +125,7 @@ zechoer_test (bool verbose)
     //assert ( (str_SELFTEST_DIR_RW != "") );
     // NOTE that for "char*" context you need (str_SELFTEST_DIR_RO + "/myfilename").c_str()
 
-    zechoer_t *self = zechoer_new ();
+    zechoer_t *self = zechoer_new ("inproc://zechotest");
     assert (self);
     zechoer_destroy (&self);
     //  @end

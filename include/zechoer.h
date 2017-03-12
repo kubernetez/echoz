@@ -20,7 +20,7 @@ extern "C" {
 //  @interface
 //  Create a new zechoer
 ECHOZ_EXPORT zechoer_t *
-    zechoer_new (void);
+    zechoer_new (char  *endpoints);
 
 //  Destroy the zechoer
 ECHOZ_EXPORT void

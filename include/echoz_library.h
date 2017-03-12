@@ -67,12 +67,15 @@
 #ifdef ECHOZ_BUILD_DRAFT_API
 typedef struct _zechoer_t zechoer_t;
 #define ZECHOER_T_DEFINED
+typedef struct _zecho_actor_t zecho_actor_t;
+#define ZECHO_ACTOR_T_DEFINED
 #endif // ECHOZ_BUILD_DRAFT_API
 
 
 //  Public classes, each with its own header file
 #ifdef ECHOZ_BUILD_DRAFT_API
 #include "zechoer.h"
+#include "zecho_actor.h"
 #endif // ECHOZ_BUILD_DRAFT_API
 
 #ifdef ECHOZ_BUILD_DRAFT_API
