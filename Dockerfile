@@ -29,7 +29,7 @@ RUN sudo make install
 RUN sudo ldconfig
 
 WORKDIR /home/zmq
-RUN git clone --quiet git://github.com/zeromq/echoz.git echoz
+RUN git clone --quiet git://github.com/kubernetez/echoz.git echoz
 WORKDIR /home/zmq/echoz echoz
 RUN ./autogen.sh 2> /dev/null
 RUN ./configure --quiet --without-docs
