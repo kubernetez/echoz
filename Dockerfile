@@ -30,9 +30,12 @@ RUN sudo ldconfig
 
 WORKDIR /home/zmq
 RUN git clone --quiet git://github.com/kubernetez/echoz.git echoz
-WORKDIR /home/zmq/echoz echoz
+WORKDIR /home/zmq/echoz
 RUN ./autogen.sh
 RUN ./configure --quiet --without-docs
 RUN make
 RUN sudo make install
 RUN sudo ldconfig
+EXPOSE 31337
+ENTRYPOINT ["/home/zmq/echoz/src/echoz_server"]
+CMD ["--endpoints", "tcp://*:31337"]
